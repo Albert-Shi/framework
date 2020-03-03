@@ -1,6 +1,7 @@
 package com.shishuheng.webdemo.domain.permission;
 
 import com.shishuheng.webdemo.domain.base.BaseEntity;
+import com.shishuheng.webdemo.domain.status.Status;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -10,6 +11,7 @@ import org.springframework.security.core.GrantedAuthority;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import java.util.Date;
+import java.util.Set;
 
 /**
  * @author shishuheng
@@ -35,11 +37,11 @@ public class Permission extends BaseEntity implements GrantedAuthority {
 //    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "permissions")
 //    private Set<Role> roles;
 
-    public Permission(String label, String permission, String description) {
+    public Permission(String label, String permission, String description, Status status) {
         this.label = label;
         this.permission = permission;
         this.description = description;
-        this.setStatus(1);
+        this.setStatus(status);
         this.setCreatedDate(new Date());
     }
 

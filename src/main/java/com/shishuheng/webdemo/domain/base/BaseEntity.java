@@ -1,6 +1,7 @@
 package com.shishuheng.webdemo.domain.base;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.shishuheng.webdemo.domain.status.Status;
 import com.shishuheng.webdemo.domain.user.User;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -28,9 +29,10 @@ public class BaseEntity implements Serializable {
     @ApiModelProperty(value = "id")
     private Long id;
 
-    @Column(name = "status", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "status", nullable = true)
     @ApiModelProperty(value = "状态")
-    private Integer status;
+    private Status status;
 
     @CreatedBy
     @ManyToOne

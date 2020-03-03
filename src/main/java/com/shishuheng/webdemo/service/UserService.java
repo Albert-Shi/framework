@@ -1,11 +1,15 @@
 package com.shishuheng.webdemo.service;
 
 import com.shishuheng.webdemo.domain.base.Result;
+import com.shishuheng.webdemo.domain.permission.Permission;
 import com.shishuheng.webdemo.domain.role.Role;
 import com.shishuheng.webdemo.domain.role.RoleRepository;
+import com.shishuheng.webdemo.domain.status.Status;
+import com.shishuheng.webdemo.domain.status.StatusRepository;
 import com.shishuheng.webdemo.domain.user.User;
 import com.shishuheng.webdemo.domain.user.UserDto;
 import com.shishuheng.webdemo.domain.user.UserRepository;
+import com.shishuheng.webdemo.service.base.BaseService;
 import com.shishuheng.webdemo.utils.CommonUtil;
 import com.shishuheng.webdemo.utils.MD5Util;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +36,7 @@ import java.util.*;
 @Slf4j
 @Service
 @DependsOn(value = "roleService")
-public class UserService implements UserDetailsService {
+public class UserService extends BaseService<User> implements UserDetailsService {
 
     @Autowired
     private UserRepository repository;
@@ -40,24 +44,12 @@ public class UserService implements UserDetailsService {
     @Autowired
     private RoleRepository roleRepository;
 
+    @Autowired
+    private StatusRepository statusRepository;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return repository.findUserByUsername(username);
-    }
-
-    @PostConstruct
-    public void init() {
-        if (repository.count() < 1) {
-            Set<Role> roles = new HashSet<>(roleRepository.findAll());
-            User user = new User();
-            user.setUsername("admin");
-            user.setPassword(MD5Util.encode("123456"));
-            user.setStatus(1);
-            user.setCreatedDate(new Date());
-            user.setRoles(roles);
-            repository.save(user);
-            log.info("***** 初始化管理员 admin *****");
-        }
     }
 
     /**
@@ -134,5 +126,35 @@ public class UserService implements UserDetailsService {
         CommonUtil.copyObject(dto, updateOne, false);
         repository.save(updateOne);
         return new Result();
+    }
+
+    @Override
+    public Set<Permission> initPermission() {
+        return null;
+    }
+
+    @Override
+    public void initStatus() {
+
+    }
+
+    @Override
+    public void initEntity() {
+        if (repository.count() < 1) {
+            Status enabled = statusRepository.findStatusByCodeAndEffectEntity("enabled", getManagedEntity());
+            if (null == enabled) {
+                log.info("获取启用状态出错");
+                return;
+            }
+            Set<Role> roles = new HashSet<>(roleRepository.findAll());
+            User user = new User();
+            user.setUsername("admin");
+            user.setPassword(MD5Util.encode("123456"));
+            user.setStatus(enabled);
+            user.setCreatedDate(new Date());
+            user.setRoles(roles);
+            repository.save(user);
+            log.info("***** 初始化管理员 admin *****");
+        }
     }
 }

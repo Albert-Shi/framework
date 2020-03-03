@@ -6,6 +6,9 @@ import com.shishuheng.webdemo.domain.permission.PermissionRepository;
 import com.shishuheng.webdemo.domain.role.Role;
 import com.shishuheng.webdemo.domain.role.RoleDto;
 import com.shishuheng.webdemo.domain.role.RoleRepository;
+import com.shishuheng.webdemo.domain.status.Status;
+import com.shishuheng.webdemo.domain.status.StatusRepository;
+import com.shishuheng.webdemo.service.base.BaseService;
 import com.shishuheng.webdemo.utils.CommonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -14,7 +17,6 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -28,22 +30,39 @@ import java.util.*;
 @Slf4j
 @Service
 @DependsOn(value = "permissionService")
-public class RoleService {
+public class RoleService extends BaseService<Role> {
     @Autowired
     private RoleRepository repository;
 
     @Autowired
     private PermissionRepository permissionRepository;
 
-    @PostConstruct
-    public void init() {
+    @Autowired
+    private StatusRepository statusRepository;
+
+    @Override
+    public Set<Permission> initPermission() {
+        return null;
+    }
+
+    @Override
+    public void initStatus() {
+
+    }
+
+    @Override
+    public void initEntity() {
         if (repository.count() < 1) {
+            Status enabled = statusRepository.findStatusByCodeAndEffectEntity("enabled", getManagedEntity());
+            if (null == enabled) {
+                log.info("获取启用状态出错");
+                return;
+            }
             List<Permission> permissionList = permissionRepository.findAll();
             Set<Permission> permissions = new HashSet<>(permissionList);
-
             Role role = new Role();
             role.setLabel("管理员");
-            role.setStatus(1);
+            role.setStatus(enabled);
             role.setPermissions(permissions);
             role.setCreatedDate(new Date());
             repository.save(role);

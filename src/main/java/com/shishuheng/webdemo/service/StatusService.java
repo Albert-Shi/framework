@@ -30,13 +30,9 @@ import java.util.Set;
  */
 @Slf4j
 @Service
-@DependsOn(value = "managedEntityService")
-public class PermissionService extends BaseService<Permission> {
+public class StatusService extends BaseService<Status> {
     @Autowired
-    private PermissionRepository repository;
-
-    @Autowired
-    private StatusRepository statusRepository;
+    private StatusRepository repository;
 
     /**
      * 新增权限
@@ -44,14 +40,12 @@ public class PermissionService extends BaseService<Permission> {
      * @param dto
      * @return
      */
-    public Result<String> addRole(PermissionDto dto) {
-        Permission permission = repository.findPermissionByLabel(dto.getLabel());
-        if (null != permission) {
-            return new Result<>("权限标签已存在");
+    public Result<String> addStatus(Status dto) {
+        Status status = repository.findStatusByCodeAndEffectEntity(dto.getCode(), getManagedEntity());
+        if (null != status) {
+            return new Result<>("状态已存在");
         } else {
-            Permission addOne = new Permission();
-            CommonUtil.copyObject(dto, addOne, true);
-            repository.save(addOne);
+            repository.save(dto);
             return new Result<>();
         }
     }
@@ -62,11 +56,11 @@ public class PermissionService extends BaseService<Permission> {
      * @param dto
      * @return
      */
-    public Result<List<Permission>> findPermissionList(PermissionDto dto) {
+    public Result<List<Status>> findStatusList(Status dto) {
         if (null == dto) {
-            dto = new PermissionDto();
+            dto = new Status();
         }
-        List<Permission> list = repository.findAll(buildSpecification(dto));
+        List<Status> list = repository.findAll();
         return new Result<>(list);
     }
 
@@ -108,8 +102,8 @@ public class PermissionService extends BaseService<Permission> {
      * @param dto
      * @return
      */
-    public Result<String> updatePermission(PermissionDto dto) {
-        Permission updateOne = repository.selectById(dto.getId());
+    public Result<String> updateStatus(Status dto) {
+        Status updateOne = repository.selectById(dto.getId());
         CommonUtil.copyObject(dto, updateOne, false);
         repository.save(updateOne);
         return new Result();
@@ -127,17 +121,5 @@ public class PermissionService extends BaseService<Permission> {
 
     @Override
     public void initEntity() {
-        if (repository.count() < 1) {
-            Status enabled = statusRepository.findStatusByCodeAndEffectEntity("enabled", getManagedEntity());
-            if (null == enabled) {
-                log.info("获取启用状态出错");
-                return;
-            }
-            Permission all = new Permission("全部", "/**", "全部访问权限", enabled);
-            Permission login = new Permission("登录", "/login", "访问登录页面", enabled);
-            Permission logout = new Permission("退出", "/logout", "访问退出页面", enabled);
-            repository.saveAll(Arrays.asList(all, login, logout));
-            log.info("***** 初始化权限成功 *****");
-        }
     }
 }

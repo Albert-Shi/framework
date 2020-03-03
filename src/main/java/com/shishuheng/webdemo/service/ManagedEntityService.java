@@ -1,13 +1,13 @@
 package com.shishuheng.webdemo.service;
 
 import com.shishuheng.webdemo.domain.base.Result;
+import com.shishuheng.webdemo.domain.entity.ManagedEntity;
+import com.shishuheng.webdemo.domain.entity.ManagedEntityRepository;
 import com.shishuheng.webdemo.domain.permission.Permission;
 import com.shishuheng.webdemo.domain.permission.PermissionDto;
-import com.shishuheng.webdemo.domain.permission.PermissionRepository;
 import com.shishuheng.webdemo.domain.status.Status;
 import com.shishuheng.webdemo.domain.status.StatusRepository;
 import com.shishuheng.webdemo.service.base.BaseService;
-import com.shishuheng.webdemo.utils.CommonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +19,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author shishuheng
@@ -30,43 +27,21 @@ import java.util.Set;
  */
 @Slf4j
 @Service
-@DependsOn(value = "managedEntityService")
-public class PermissionService extends BaseService<Permission> {
+@DependsOn(value = "statusService")
+public class ManagedEntityService extends BaseService<ManagedEntity> {
     @Autowired
-    private PermissionRepository repository;
+    private ManagedEntityRepository repository;
 
     @Autowired
     private StatusRepository statusRepository;
 
     /**
-     * 新增权限
-     *
-     * @param dto
-     * @return
-     */
-    public Result<String> addRole(PermissionDto dto) {
-        Permission permission = repository.findPermissionByLabel(dto.getLabel());
-        if (null != permission) {
-            return new Result<>("权限标签已存在");
-        } else {
-            Permission addOne = new Permission();
-            CommonUtil.copyObject(dto, addOne, true);
-            repository.save(addOne);
-            return new Result<>();
-        }
-    }
-
-    /**
      * 查询
      *
-     * @param dto
      * @return
      */
-    public Result<List<Permission>> findPermissionList(PermissionDto dto) {
-        if (null == dto) {
-            dto = new PermissionDto();
-        }
-        List<Permission> list = repository.findAll(buildSpecification(dto));
+    public Result<List<ManagedEntity>> findManagedEntityList() {
+        List<ManagedEntity> list = repository.findAll();
         return new Result<>(list);
     }
 
@@ -102,19 +77,6 @@ public class PermissionService extends BaseService<Permission> {
         return specification;
     }
 
-    /**
-     * 权限更新
-     *
-     * @param dto
-     * @return
-     */
-    public Result<String> updatePermission(PermissionDto dto) {
-        Permission updateOne = repository.selectById(dto.getId());
-        CommonUtil.copyObject(dto, updateOne, false);
-        repository.save(updateOne);
-        return new Result();
-    }
-
     @Override
     public Set<Permission> initPermission() {
         return null;
@@ -133,11 +95,13 @@ public class PermissionService extends BaseService<Permission> {
                 log.info("获取启用状态出错");
                 return;
             }
-            Permission all = new Permission("全部", "/**", "全部访问权限", enabled);
-            Permission login = new Permission("登录", "/login", "访问登录页面", enabled);
-            Permission logout = new Permission("退出", "/logout", "访问退出页面", enabled);
-            repository.saveAll(Arrays.asList(all, login, logout));
-            log.info("***** 初始化权限成功 *****");
+            ManagedEntity managedEntity = new ManagedEntity();
+            managedEntity.setLabel("管理的实体信息");
+            managedEntity.setClassName(managedEntity.getClass().getSimpleName());
+            managedEntity.setDescription("管理的实体信息本身");
+            managedEntity.setCreatedDate(new Date());
+            repository.saveAll(Arrays.asList(managedEntity));
+            log.info("***** 初始化管理实体成功 *****");
         }
     }
 }
