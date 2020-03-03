@@ -27,7 +27,7 @@ import java.util.*;
  */
 @Slf4j
 @Service
-@DependsOn(value = "statusService")
+//@DependsOn(value = "statusService")
 public class ManagedEntityService extends BaseService<ManagedEntity> {
     @Autowired
     private ManagedEntityRepository repository;
@@ -89,19 +89,11 @@ public class ManagedEntityService extends BaseService<ManagedEntity> {
 
     @Override
     public void initEntity() {
-        if (repository.count() < 1) {
-            Status enabled = statusRepository.findStatusByCodeAndEffectEntity("enabled", getManagedEntity());
-            if (null == enabled) {
-                log.info("获取启用状态出错");
-                return;
-            }
-            ManagedEntity managedEntity = new ManagedEntity();
-            managedEntity.setLabel("管理的实体信息");
-            managedEntity.setClassName(managedEntity.getClass().getSimpleName());
-            managedEntity.setDescription("管理的实体信息本身");
-            managedEntity.setCreatedDate(new Date());
-            repository.saveAll(Arrays.asList(managedEntity));
-            log.info("***** 初始化管理实体成功 *****");
+        ManagedEntity managedEntity = repository.findManagedEntityByClassName(ManagedEntity.class.getSimpleName());
+        if (null != managedEntity && null == managedEntity.getStatus()) {
+            Status meEnabled = statusRepository.findStatusByCodeAndEffectEntity(managedEntity.getClassName() + "Enabled", managedEntity);
+            managedEntity.setStatus(meEnabled);
+            repository.save(managedEntity);
         }
     }
 }

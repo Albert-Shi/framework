@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.Set;
 
 /**
@@ -34,7 +35,7 @@ public class Status extends BaseEntity {
     @JoinColumn(name = "effectEntity")
     private ManagedEntity effectEntity;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @ApiModelProperty(value = "此状态拥有的权限")
     private Set<Permission> permissions;
 
@@ -47,5 +48,6 @@ public class Status extends BaseEntity {
         this.description = description;
         this.effectEntity = effectEntity;
         this.permissions = permissions;
+        this.setCreatedDate(new Date());
     }
 }

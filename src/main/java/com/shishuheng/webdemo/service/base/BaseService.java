@@ -74,9 +74,7 @@ public abstract class BaseService<T extends BaseEntity> {
         boolean needInit = addManage();
         if (needInit) {
             Set<Permission> permissions = initPermission();
-            if (null != managedEntity && !managedEntity.getClassName().equalsIgnoreCase("Status")) {
-                initBaseStatus(null, permissions);
-            }
+            initBaseStatus(null, permissions);
             initStatus();
             initEntity();
         }
@@ -88,19 +86,15 @@ public abstract class BaseService<T extends BaseEntity> {
             logger.info("实例化对象失败");
             return false;
         }
-        if (entity instanceof ManagedEntity) {
-            logger.info("ManagedEntity的addManage()的不执行跳过");
-            return true;
-        }
         String className = entity.getClass().getSimpleName();
         ManagedEntity one = managedEntityRepository.findManagedEntityByClassName(className);
         if (null == one) {
-            if (className.equalsIgnoreCase("Status")) {
-                initBaseStatus("状态", null);
-            }
+            ManagedEntity effectEntity = managedEntityRepository.findManagedEntityByClassName(ManagedEntity.class.getSimpleName());
+            Status meEnabled = statusRepository.findStatusByCodeAndEffectEntity(ManagedEntity.class.getSimpleName() + "Enabled", effectEntity);
             ManagedEntity managedEntity = new ManagedEntity();
             managedEntity.setClassName(entity.getClass().getSimpleName());
             managedEntity.setLabel(entity.getClass().getAnnotation(ApiModel.class).value());
+            managedEntity.setStatus(meEnabled);
             managedEntity.setCreatedDate(new Date());
             managedEntityRepository.save(managedEntity);
             this.managedEntity = managedEntity;
@@ -119,8 +113,8 @@ public abstract class BaseService<T extends BaseEntity> {
         if (null == entityName) {
             entityName = managedEntity.getLabel();
         }
-        Status enabled = new Status("enabled", "启用", entityName + "实体处于启用的状态,可以使用绝大部分权限", managedEntity, permissions);
-        Status disabled = new Status("disabled", "禁用", entityName + "实体处于禁用的状态,权限会受到限制", managedEntity, permissions);
+        Status enabled = new Status(managedEntity.getClassName() + "Enabled", managedEntity.getLabel() + "启用", entityName + "实体处于启用的状态,可以使用绝大部分权限", managedEntity, permissions);
+        Status disabled = new Status(managedEntity.getClassName() + "Disabled", managedEntity.getLabel() + "禁用", entityName + "实体处于禁用的状态,权限会受到限制", managedEntity, permissions);
         List<Status> statuses = Arrays.asList(enabled, disabled);
         statusRepository.saveAll(statuses);
         return statuses;

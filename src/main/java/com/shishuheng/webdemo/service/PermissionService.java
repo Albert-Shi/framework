@@ -128,7 +128,7 @@ public class PermissionService extends BaseService<Permission> {
     @Override
     public void initEntity() {
         if (repository.count() < 1) {
-            Status enabled = statusRepository.findStatusByCodeAndEffectEntity("enabled", getManagedEntity());
+            Status enabled = statusRepository.findStatusByCodeAndEffectEntity(getManagedEntity().getClassName() + "Enabled", getManagedEntity());
             if (null == enabled) {
                 log.info("获取启用状态出错");
                 return;
