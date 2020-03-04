@@ -14,4 +14,8 @@ spring:
   redis:
     host: localhost
     timeout: 60000
-#    password:
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
