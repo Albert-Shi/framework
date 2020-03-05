@@ -7,7 +7,6 @@ spring:
     username: root
     password: root
 
-
   jpa:
     hibernate:
       ddl-auto: update
@@ -15,7 +14,9 @@ spring:
     host: localhost
     timeout: 60000
 
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
+security:
+  oauth2:
+    client:
+      client-id: first-client
+      client-secret: noonewilleverguess
+    resource:
