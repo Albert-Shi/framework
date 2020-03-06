@@ -6,6 +6,7 @@ import com.shishuheng.webdemo.domain.entity.ManagedEntityRepository;
 import com.shishuheng.webdemo.domain.permission.Permission;
 import com.shishuheng.webdemo.domain.status.Status;
 import com.shishuheng.webdemo.domain.status.StatusRepository;
+import com.shishuheng.webdemo.helper.common.GlobalProperties;
 import io.swagger.annotations.ApiModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,10 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
 import java.lang.reflect.*;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author shishuheng
@@ -31,7 +29,15 @@ public abstract class BaseService<T extends BaseEntity> {
     @Autowired
     private StatusRepository statusRepository;
 
+    @Autowired
+    private GlobalProperties globalProperties;
+
     private ManagedEntity managedEntity;
+
+    /**
+     * 已存在的状态集合
+     */
+    private Map<String, Status> statusMap = new HashMap<>();
 
     // type不能直接实例化对象，通过type获取class的类型，然后实例化对象
     public static Class<?> getRawType(Type type) {
@@ -69,6 +75,11 @@ public abstract class BaseService<T extends BaseEntity> {
      */
     public abstract void initEntity();
 
+    /**
+     * Service初始化
+     * <p>
+     * 此处各个方法的调用顺序不可修改
+     */
     @PostConstruct
     public void init() {
         boolean needInit = addManage();
@@ -76,8 +87,51 @@ public abstract class BaseService<T extends BaseEntity> {
             Set<Permission> permissions = initPermission();
             initBaseStatus(null, permissions);
             initStatus();
+            findAllStatus();
             initEntity();
         }
+    }
+
+    /**
+     * 查询所有状态 并将状态存入map 方便快速使用
+     */
+    private void findAllStatus() {
+        if (null != globalProperties.getLowMemoryMode() && globalProperties.getLowMemoryMode()) {
+            // 若使用低内存模式 则不将状态缓存到内存map中
+            return;
+        }
+        List<Status> statuses = statusRepository.findStatusesByEffectEntity(managedEntity);
+        if (null != statuses && statuses.size() > 0) {
+            for (Status s : statuses) {
+                statusMap.put(s.getCode(), s);
+            }
+        }
+    }
+
+    /**
+     * 获取状态
+     *
+     * @param statusCode
+     * @return
+     */
+    public Status getStatus(String statusCode) {
+        Status status = null;
+        // 若未使用低内存模式 则直接从内存map取
+        if (null != globalProperties.getLowMemoryMode() && !globalProperties.getLowMemoryMode()) {
+            status = statusMap.get(statusCode);
+            if (null == status) {
+                // 若map不存在此状态 则再从数据库取
+                status = statusRepository.findStatusByCodeAndEffectEntity(statusCode, managedEntity);
+            }
+            if (null != status) {
+                // 若从数据库取出此状态 则直接存入map 方便下次使用
+                statusMap.put(status.getCode(), status);
+            }
+        } else {
+            // 若使用低内存模式 则直接去数据库取
+            status = statusRepository.findStatusByCodeAndEffectEntity(statusCode, managedEntity);
+        }
+        return status;
     }
 
     private boolean addManage() {
