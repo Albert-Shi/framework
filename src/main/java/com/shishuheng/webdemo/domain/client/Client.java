@@ -137,7 +137,7 @@ public class Client extends BaseEntity implements ClientDetails {
         }
         Set<String> set = new HashSet<>();
         try {
-            JSONArray array = JSON.parseArray(resourceJson);
+            JSONArray array = JSON.parseArray(json);
             for (int i = 0; i < array.size(); i++) {
                 String value = array.getString(i);
                 set.add(value);
@@ -161,7 +161,7 @@ public class Client extends BaseEntity implements ClientDetails {
         }
         Set<GrantedAuthority> set = new HashSet<>();
         try {
-            JSONArray array = JSON.parseArray(resourceJson);
+            JSONArray array = JSON.parseArray(json);
             for (int i = 0; i < array.size(); i++) {
                 String value = array.getString(i);
                 GrantedAuthority authority = new SimpleGrantedAuthority(value);

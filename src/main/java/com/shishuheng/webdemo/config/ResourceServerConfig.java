@@ -17,8 +17,8 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 //        http.authorizeRequests().anyRequest().authenticated().and().requestMatchers().antMatchers("/oauth/token");
 //        http.authorizeRequests().antMatchers("/user/**").authenticated();
         http
-                .authorizeRequests().anyRequest().authenticated()
-                .and()
-                .requestMatchers().antMatchers("/user/**");
+                .authorizeRequests().anyRequest().authenticated();
+//                .and()
+//                .requestMatchers().antMatchers("/user/**");
     }
 }

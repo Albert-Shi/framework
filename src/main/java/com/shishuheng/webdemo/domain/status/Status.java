@@ -1,5 +1,6 @@
 package com.shishuheng.webdemo.domain.status;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.shishuheng.webdemo.domain.base.BaseEntity;
 import com.shishuheng.webdemo.domain.entity.ManagedEntity;
 import com.shishuheng.webdemo.domain.permission.Permission;
@@ -38,6 +39,9 @@ public class Status extends BaseEntity {
     @OneToMany(fetch = FetchType.EAGER)
     @ApiModelProperty(value = "此状态拥有的权限")
     private Set<Permission> permissions;
+
+    @Transient
+    private Status status = null;
 
     public Status() {
     }

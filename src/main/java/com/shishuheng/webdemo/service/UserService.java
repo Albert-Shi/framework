@@ -39,7 +39,7 @@ import java.util.*;
 public class UserService extends BaseService<User> implements UserDetailsService {
 
     @Autowired
-    private UserRepository repository;
+    private UserRepository repository;/**/
 
     @Autowired
     private RoleRepository roleRepository;
