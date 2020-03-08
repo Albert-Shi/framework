@@ -29,11 +29,6 @@ public class BaseEntity implements Serializable {
     @ApiModelProperty(value = "id")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "status", nullable = true)
-    @ApiModelProperty(value = "状态")
-    private Status status;
-
     @CreatedBy
     @ManyToOne
     @JoinColumn(name = "created_by")

@@ -1,7 +1,5 @@
 package com.shishuheng.webdemo.config;
 
-import com.shishuheng.webdemo.security.MyAuthenticationFilter;
-import com.shishuheng.webdemo.security.MyAuthenticationProvider;
 import com.shishuheng.webdemo.service.UserService;
 import com.shishuheng.webdemo.service.base.MyAccessDeniedHandler;
 import com.shishuheng.webdemo.service.base.MyPasswordEncoder;
@@ -13,8 +11,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * @author shishuheng

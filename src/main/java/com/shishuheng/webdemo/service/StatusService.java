@@ -35,7 +35,7 @@ public class StatusService extends BaseService<Status> {
     private StatusRepository repository;
 
     /**
-     * 新增权限
+     * 新增状态
      *
      * @param dto
      * @return

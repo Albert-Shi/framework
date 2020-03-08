@@ -11,6 +11,12 @@ import org.springframework.data.repository.NoRepositoryBean;
  */
 @NoRepositoryBean
 public interface BaseRepository<T extends BaseEntity> extends JpaRepository<T, Long>, JpaSpecificationExecutor<T> {
+    /**
+     * 根据id查询实体对象
+     *
+     * @param id
+     * @return
+     */
     @Query(value = "select e from #{#entityName} as e where e.id = ?1")
     T selectById(Long id);
 }

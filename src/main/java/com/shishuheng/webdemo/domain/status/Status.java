@@ -40,9 +40,6 @@ public class Status extends BaseEntity {
     @ApiModelProperty(value = "此状态拥有的权限")
     private Set<Permission> permissions;
 
-    @Transient
-    private Status status = null;
-
     public Status() {
     }
 

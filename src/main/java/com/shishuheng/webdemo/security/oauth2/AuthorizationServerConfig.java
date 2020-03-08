@@ -1,7 +1,8 @@
-package com.shishuheng.webdemo.config;
+package com.shishuheng.webdemo.security.oauth2;
 
 import com.shishuheng.webdemo.helper.common.GlobalProperties;
 import com.shishuheng.webdemo.service.ClientService;
+import com.shishuheng.webdemo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,6 +29,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     private ClientService clientService;
     @Autowired
     private GlobalProperties globalProperties;
+    @Autowired
+    private UserService userService;
 
     @Bean
     public JwtAccessTokenConverter jwtAccessTokenConverter() {
@@ -53,6 +56,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints
+                .userDetailsService(userService)
                 .authenticationManager(authenticationManager)
                 .accessTokenConverter(jwtAccessTokenConverter())
                 .tokenStore(jwtTokenStore());

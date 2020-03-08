@@ -1,6 +1,6 @@
 package com.shishuheng.webdemo.domain.permission;
 
-import com.shishuheng.webdemo.domain.base.BaseDto;
+import com.shishuheng.webdemo.domain.base.BaseStatusDto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -11,7 +11,7 @@ import lombok.Data;
  */
 @Data
 @ApiModel(value = "权限dto")
-public class PermissionDto extends BaseDto {
+public class PermissionDto extends BaseStatusDto {
     @ApiModelProperty(value = "权限标签")
     private String label;
 

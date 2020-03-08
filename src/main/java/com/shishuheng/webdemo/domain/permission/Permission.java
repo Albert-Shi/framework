@@ -1,6 +1,6 @@
 package com.shishuheng.webdemo.domain.permission;
 
-import com.shishuheng.webdemo.domain.base.BaseEntity;
+import com.shishuheng.webdemo.domain.base.BaseStatusEntity;
 import com.shishuheng.webdemo.domain.status.Status;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -11,7 +11,6 @@ import org.springframework.security.core.GrantedAuthority;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import java.util.Date;
-import java.util.Set;
 
 /**
  * @author shishuheng
@@ -21,7 +20,7 @@ import java.util.Set;
 @Data
 @Entity
 @ApiModel(value = "权限")
-public class Permission extends BaseEntity implements GrantedAuthority {
+public class Permission extends BaseStatusEntity implements GrantedAuthority {
     @ApiModelProperty(value = "权限标签")
     @Column(name = "label", unique = true)
     private String label;

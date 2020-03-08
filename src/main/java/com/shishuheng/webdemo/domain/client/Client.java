@@ -2,7 +2,7 @@ package com.shishuheng.webdemo.domain.client;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
-import com.shishuheng.webdemo.domain.base.BaseEntity;
+import com.shishuheng.webdemo.domain.base.BaseStatusEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -25,7 +25,7 @@ import java.util.Set;
 @Data
 @Entity
 @ApiModel(value = "客户端")
-public class Client extends BaseEntity implements ClientDetails {
+public class Client extends BaseStatusEntity implements ClientDetails {
     @Column(name = "client_id", nullable = false, unique = true)
     @ApiModelProperty(value = "客户端id")
     private String clientId;

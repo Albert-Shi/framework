@@ -19,4 +19,15 @@ security:
     client:
       client-id: first-client
       client-secret: noonewilleverguess
+      access-token-uri: localhost:8080/oauth/token
+      user-authorization-uri: localhost:8080/oauth/authorize
     resource:
+      user-info: localhost:8080/user
+      jwt:
+        key-uri: localhost:8080/oauth/token_key
+
+global:
+  # 低内存模式
+  lowMemoryMode: false
+  # jwtAccessToken的signingKey
+  signingKey:

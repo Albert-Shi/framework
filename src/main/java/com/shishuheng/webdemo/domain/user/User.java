@@ -1,6 +1,6 @@
 package com.shishuheng.webdemo.domain.user;
 
-import com.shishuheng.webdemo.domain.base.BaseEntity;
+import com.shishuheng.webdemo.domain.base.BaseStatusEntity;
 import com.shishuheng.webdemo.domain.permission.Permission;
 import com.shishuheng.webdemo.domain.role.Role;
 import io.swagger.annotations.ApiModelProperty;
@@ -22,7 +22,7 @@ import java.util.Set;
  */
 @Data
 @Entity
-public class User extends BaseEntity implements UserDetails {
+public class User extends BaseStatusEntity implements UserDetails {
     @Column(name = "username", unique = true, nullable = false)
     @ApiModelProperty(value = "用户名")
     private String username;

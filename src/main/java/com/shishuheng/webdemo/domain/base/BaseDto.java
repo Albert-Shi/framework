@@ -22,9 +22,6 @@ public class BaseDto {
     @ApiModelProperty(value = "id")
     private Long id;
 
-    @ApiModelProperty(value = "状态")
-    private Integer status;
-
     @ApiModelProperty(value = "创建人")
     private User createdBy;
 

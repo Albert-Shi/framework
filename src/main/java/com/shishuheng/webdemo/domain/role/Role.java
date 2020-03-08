@@ -1,6 +1,6 @@
 package com.shishuheng.webdemo.domain.role;
 
-import com.shishuheng.webdemo.domain.base.BaseEntity;
+import com.shishuheng.webdemo.domain.base.BaseStatusEntity;
 import com.shishuheng.webdemo.domain.permission.Permission;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -19,7 +19,7 @@ import java.util.Set;
 @Data
 @Entity
 @ApiModel(value = "角色")
-public class Role extends BaseEntity {
+public class Role extends BaseStatusEntity {
     @Column(name = "label", unique = true)
     @ApiModelProperty(value = "角色标签")
     private String label;

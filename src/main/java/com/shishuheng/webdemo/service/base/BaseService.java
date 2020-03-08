@@ -39,27 +39,6 @@ public abstract class BaseService<T extends BaseEntity> {
      */
     private Map<String, Status> statusMap = new HashMap<>();
 
-    // type不能直接实例化对象，通过type获取class的类型，然后实例化对象
-    public static Class<?> getRawType(Type type) {
-        if (type instanceof Class) {
-            return (Class) type;
-        } else if (type instanceof ParameterizedType) {
-            ParameterizedType parameterizedType = (ParameterizedType) type;
-            Type rawType = parameterizedType.getRawType();
-            return (Class) rawType;
-        } else if (type instanceof GenericArrayType) {
-            Type componentType = ((GenericArrayType) type).getGenericComponentType();
-            return Array.newInstance(getRawType(componentType), 0).getClass();
-        } else if (type instanceof TypeVariable) {
-            return Object.class;
-        } else if (type instanceof WildcardType) {
-            return getRawType(((WildcardType) type).getUpperBounds()[0]);
-        } else {
-            String className = type == null ? "null" : type.getClass().getName();
-            throw new IllegalArgumentException("Expected a Class, ParameterizedType, or GenericArrayType, but <" + type + "> is of type " + className);
-        }
-    }
-
     /**
      * 初始化此实体的权限
      */
@@ -89,6 +68,8 @@ public abstract class BaseService<T extends BaseEntity> {
             initStatus();
             findAllStatus();
             initEntity();
+        } else {
+            findAllStatus();
         }
     }
 
@@ -98,6 +79,7 @@ public abstract class BaseService<T extends BaseEntity> {
     private void findAllStatus() {
         if (null != globalProperties.getLowMemoryMode() && globalProperties.getLowMemoryMode()) {
             // 若使用低内存模式 则不将状态缓存到内存map中
+            logger.info("低内存模式将不缓存" + managedEntity.getClassName() + "的所有状态");
             return;
         }
         List<Status> statuses = statusRepository.findStatusesByEffectEntity(managedEntity);
@@ -143,12 +125,9 @@ public abstract class BaseService<T extends BaseEntity> {
         String className = entity.getClass().getSimpleName();
         ManagedEntity one = managedEntityRepository.findManagedEntityByClassName(className);
         if (null == one) {
-            ManagedEntity effectEntity = managedEntityRepository.findManagedEntityByClassName(ManagedEntity.class.getSimpleName());
-            Status meEnabled = statusRepository.findStatusByCodeAndEffectEntity(ManagedEntity.class.getSimpleName() + "Enabled", effectEntity);
             ManagedEntity managedEntity = new ManagedEntity();
             managedEntity.setClassName(entity.getClass().getSimpleName());
             managedEntity.setLabel(entity.getClass().getAnnotation(ApiModel.class).value());
-            managedEntity.setStatus(meEnabled);
             managedEntity.setCreatedDate(new Date());
             managedEntityRepository.save(managedEntity);
             this.managedEntity = managedEntity;
@@ -178,6 +157,7 @@ public abstract class BaseService<T extends BaseEntity> {
         return this.managedEntity;
     }
 
+    // @formatter:off
     // 以下方法抄自 csdn
     private T createModel() {
         try {
@@ -190,5 +170,27 @@ public abstract class BaseService<T extends BaseEntity> {
         }
         return null;
     }
+
+    // type不能直接实例化对象，通过type获取class的类型，然后实例化对象
+    private Class<?> getRawType(Type type) {
+        if (type instanceof Class) {
+            return (Class) type;
+        } else if (type instanceof ParameterizedType) {
+            ParameterizedType parameterizedType = (ParameterizedType) type;
+            Type rawType = parameterizedType.getRawType();
+            return (Class) rawType;
+        } else if (type instanceof GenericArrayType) {
+            Type componentType = ((GenericArrayType) type).getGenericComponentType();
+            return Array.newInstance(getRawType(componentType), 0).getClass();
+        } else if (type instanceof TypeVariable) {
+            return Object.class;
+        } else if (type instanceof WildcardType) {
+            return getRawType(((WildcardType) type).getUpperBounds()[0]);
+        } else {
+            String className = type == null ? "null" : type.getClass().getName();
+            throw new IllegalArgumentException("Expected a Class, ParameterizedType, or GenericArrayType, but <" + type + "> is of type " + className);
+        }
+    }
     // 摘录自 https://blog.csdn.net/tgbus18990140382/article/details/80622524
+    // @formatter:on
 }

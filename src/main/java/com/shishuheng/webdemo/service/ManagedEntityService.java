@@ -89,11 +89,5 @@ public class ManagedEntityService extends BaseService<ManagedEntity> {
 
     @Override
     public void initEntity() {
-        ManagedEntity managedEntity = repository.findManagedEntityByClassName(ManagedEntity.class.getSimpleName());
-        if (null != managedEntity && null == managedEntity.getStatus()) {
-            Status meEnabled = statusRepository.findStatusByCodeAndEffectEntity(managedEntity.getClassName() + "Enabled", managedEntity);
-            managedEntity.setStatus(meEnabled);
-            repository.save(managedEntity);
-        }
     }
 }

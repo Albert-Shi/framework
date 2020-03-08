@@ -1,6 +1,6 @@
 package com.shishuheng.webdemo.domain.user;
 
-import com.shishuheng.webdemo.domain.base.BaseDto;
+import com.shishuheng.webdemo.domain.base.BaseStatusDto;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -11,7 +11,7 @@ import java.util.Set;
  * @date 2020/2/26 9:34 上午
  */
 @Data
-public class UserDto extends BaseDto {
+public class UserDto extends BaseStatusDto {
     @ApiModelProperty(value = "用户名")
     private String username;
 
