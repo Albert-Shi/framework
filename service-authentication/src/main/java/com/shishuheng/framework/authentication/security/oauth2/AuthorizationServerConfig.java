@@ -35,7 +35,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Bean
     public JwtAccessTokenConverter jwtAccessTokenConverter() {
         JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-        if (null != globalProperties.getSigningKey() && "".equals(globalProperties.getSigningKey())) {
+        if (null != globalProperties.getSigningKey() && !"".equals(globalProperties.getSigningKey())) {
             SIGNING_KEY = globalProperties.getSigningKey();
         }
         converter.setSigningKey(SIGNING_KEY);
