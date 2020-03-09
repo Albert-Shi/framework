@@ -19,6 +19,7 @@
     <modules>
         <module>eureka</module>
         <module>service-authentication</module>
+        <module>service-gateway</module>
     </modules>
 
     <properties>
