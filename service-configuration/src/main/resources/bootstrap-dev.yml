@@ -5,14 +5,34 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:9010/eureka
+# 此处是设置暴露/actuator/bus-refresh等方法的 配置中心的服务端和客户端都需要进行以下配置
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+#  server:
+#    port: 9030
 
 spring:
   application:
     name: @pom.artifactId@
+  profiles:
+    # 使用本地仓库
+    active: native
   cloud:
+    # 配置消息总线的kafka 配置刷新时必须有总线配置
+    stream:
+      kafka:
+        binder:
+          zk-nodes: localhost:2181
+          brokers: localhost:9092
+    bus:
+      enabled: true
     config:
-      server:
-        git:
-          uri: https://github.com/Albert-Shi/spring-cloud-configuration.git
-          search-paths: devs
       label: master
+      server:
+        native:
+          search-locations: /Users/shishuheng/devkits/playground/spring-cloud-configuration/devs/
+        # 本地仓库位置
+#          search-locations: classpath:/configurations
