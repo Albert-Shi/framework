@@ -20,6 +20,7 @@
         <module>eureka</module>
         <module>service-authentication</module>
         <module>service-gateway</module>
+        <module>service-configuration</module>
     </modules>
 
     <properties>

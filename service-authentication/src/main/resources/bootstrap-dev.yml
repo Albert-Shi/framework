@@ -1,40 +1,41 @@
-server:
-  port: 9020
-
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://localhost:9010/eureka
-
-spring:
-  datasource:
-    url: jdbc:mysql://localhost:3306/web_demo?useUnicode=true&characterEncoding=utf8
-    username: root
-    password: root
-  jpa:
-    hibernate:
-      ddl-auto: update
-  redis:
-    host: localhost
-    timeout: 60000
-  application:
-    name: @pom.artifactId@
-
-security:
-  hostname: localhost:${server.port}
-  oauth2:
-    client:
-      client-id: first-client
-      client-secret: noonewilleverguess
-      access-token-uri: ${security.hostname}/oauth/token
-      user-authorization-uri: ${security.hostname}/oauth/authorize
-    resource:
-      user-info: ${security.hostname}/user
-      jwt:
-        key-uri: ${security.hostname}/oauth/token_key
-
-global:
-  # 低内存模式
-  lowMemoryMode: false
-  # jwtAccessToken的signingKey
-  signingKey:
+#server:
+#  port: 9020
+#
+#eureka:
+#  client:
+#    serviceUrl:
+#      defaultZone: http://localhost:9010/eureka
+#
+#spring:
+#  datasource:
+#    url: jdbc:mysql://localhost:3306/web_demo?useUnicode=true&characterEncoding=utf8
+#    username: root
+#    password: root
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#  jpa:
+#    hibernate:
+#      ddl-auto: update
+#  redis:
+#    host: localhost
+#    timeout: 60000
+#  application:
+#    name: @pom.artifactId@
+#
+#security:
+#  hostname: localhost:${server.port}
+#  oauth2:
+#    client:
+#      client-id: first-client
+#      client-secret: noonewilleverguess
+#      access-token-uri: ${security.hostname}/oauth/token
+#      user-authorization-uri: ${security.hostname}/oauth/authorize
+#    resource:
+#      user-info: ${security.hostname}/user
+#      jwt:
+#        key-uri: ${security.hostname}/oauth/token_key
+#
+#global:
+#  # 低内存模式
+#  lowMemoryMode: false
+#  # jwtAccessToken的signingKey
+#  signingKey:

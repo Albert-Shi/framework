@@ -10,6 +10,10 @@ eureka:
     serviceUrl:
       defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
 
+
 spring:
   application:
     name: @pom.artifactId@
+security:
+  basic:
+    enabled: false

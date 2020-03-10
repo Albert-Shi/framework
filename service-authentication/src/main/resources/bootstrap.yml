@@ -1,3 +1,17 @@
 spring:
+  application:
+    name: @pom.artifactId@
+  cloud:
+    config:
+      profile: dev
+      label: master
+      discovery:
+        enabled: true
+        service-id: service-configuration
   profiles:
     active: dev
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:9010/eureka
