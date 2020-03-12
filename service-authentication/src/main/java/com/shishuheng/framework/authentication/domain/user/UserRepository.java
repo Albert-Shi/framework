@@ -1,6 +1,7 @@
 package com.shishuheng.framework.authentication.domain.user;
 
-import com.shishuheng.framework.authentication.domain.base.BaseRepository;
+import com.shishuheng.framework.common.module.domain.base.BaseRepository;
+import com.shishuheng.framework.common.module.domain.user.User;
 
 /**
  * @author shishuheng

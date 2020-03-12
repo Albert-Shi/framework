@@ -33,6 +33,6 @@ spring:
       label: master
       server:
         native:
-          search-locations: /Users/shishuheng/devkits/playground/spring-cloud-configuration/devs/
+#          search-locations: /Users/shishuheng/devkits/playground/spring-cloud-configuration/devs/
         # 本地仓库位置
-#          search-locations: classpath:/configurations
+          search-locations: classpath:/configurations

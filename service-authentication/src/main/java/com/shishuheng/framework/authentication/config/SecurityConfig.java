@@ -1,8 +1,8 @@
 package com.shishuheng.framework.authentication.config;
 
 import com.shishuheng.framework.authentication.service.UserService;
-import com.shishuheng.framework.authentication.service.base.MyAccessDeniedHandler;
-import com.shishuheng.framework.authentication.service.base.MyPasswordEncoder;
+import com.shishuheng.framework.common.module.service.MyAccessDeniedHandler;
+import com.shishuheng.framework.common.module.service.MyPasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

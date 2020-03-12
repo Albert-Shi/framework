@@ -1,6 +1,6 @@
 package com.shishuheng.framework.authentication.config;
 
-import com.shishuheng.framework.authentication.service.base.MyPermissionEvaluator;
+import com.shishuheng.framework.common.module.service.MyPermissionEvaluator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;

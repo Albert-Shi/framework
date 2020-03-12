@@ -1,6 +1,6 @@
 package com.shishuheng.framework.authentication.controller;
 
-import com.shishuheng.framework.authentication.domain.base.Result;
+import com.shishuheng.framework.common.module.domain.base.Result;
 import com.shishuheng.framework.authentication.helper.common.GlobalProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

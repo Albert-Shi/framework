@@ -1,9 +1,9 @@
 package com.shishuheng.framework.authentication.controller;
 
-import com.shishuheng.framework.authentication.domain.base.Result;
-import com.shishuheng.framework.authentication.domain.permission.Permission;
-import com.shishuheng.framework.authentication.domain.permission.PermissionDto;
+import com.shishuheng.framework.common.module.domain.base.Result;
 import com.shishuheng.framework.authentication.service.PermissionService;
+import com.shishuheng.framework.common.module.domain.permission.Permission;
+import com.shishuheng.framework.common.module.domain.permission.PermissionDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

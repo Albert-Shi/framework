@@ -1,9 +1,9 @@
 package com.shishuheng.framework.authentication.controller;
 
-import com.shishuheng.framework.authentication.domain.base.Result;
-import com.shishuheng.framework.authentication.domain.role.Role;
-import com.shishuheng.framework.authentication.domain.role.RoleDto;
+import com.shishuheng.framework.common.module.domain.base.Result;
 import com.shishuheng.framework.authentication.service.RoleService;
+import com.shishuheng.framework.common.module.domain.role.Role;
+import com.shishuheng.framework.common.module.domain.role.RoleDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

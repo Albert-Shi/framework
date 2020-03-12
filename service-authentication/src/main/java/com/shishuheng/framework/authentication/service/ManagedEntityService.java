@@ -1,12 +1,12 @@
 package com.shishuheng.framework.authentication.service;
 
-import com.shishuheng.framework.authentication.domain.base.Result;
-import com.shishuheng.framework.authentication.domain.entity.ManagedEntity;
 import com.shishuheng.framework.authentication.domain.entity.ManagedEntityRepository;
-import com.shishuheng.framework.authentication.domain.permission.Permission;
-import com.shishuheng.framework.authentication.domain.permission.PermissionDto;
 import com.shishuheng.framework.authentication.domain.status.StatusRepository;
-import com.shishuheng.framework.authentication.service.base.BaseService;
+import com.shishuheng.framework.authentication.service.base.BaseAuthenticationService;
+import com.shishuheng.framework.common.module.domain.base.Result;
+import com.shishuheng.framework.common.module.domain.managed.ManagedEntity;
+import com.shishuheng.framework.common.module.domain.permission.Permission;
+import com.shishuheng.framework.common.module.domain.permission.PermissionDto;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,9 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author shishuheng
@@ -26,7 +28,7 @@ import java.util.*;
 @Slf4j
 @Service
 //@DependsOn(value = "statusService")
-public class ManagedEntityService extends BaseService<ManagedEntity> {
+public class ManagedEntityService extends BaseAuthenticationService<ManagedEntity> {
     @Autowired
     private ManagedEntityRepository repository;
 
@@ -41,6 +43,26 @@ public class ManagedEntityService extends BaseService<ManagedEntity> {
     public Result<List<ManagedEntity>> findManagedEntityList() {
         List<ManagedEntity> list = repository.findAll();
         return new Result<>(list);
+    }
+
+    /**
+     * 根据类名查询
+     *
+     * @param className
+     * @return
+     */
+    public ManagedEntity findManagedEntityByClassName(String className) {
+        return repository.findManagedEntityByClassName(className);
+    }
+
+    /**
+     * 新增
+     *
+     * @param managedEntity
+     */
+    public Result<ManagedEntity> addOne(ManagedEntity managedEntity) {
+        ManagedEntity result = repository.save(managedEntity);
+        return new Result<>(result);
     }
 
     /**

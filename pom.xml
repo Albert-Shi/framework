@@ -21,6 +21,9 @@
         <module>service-authentication</module>
         <module>service-gateway</module>
         <module>service-configuration</module>
+        <module>common-module</module>
+        <!-- 业务模块-->
+        <module>service-music</module>
     </modules>
 
     <properties>

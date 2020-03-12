@@ -1,15 +1,15 @@
 package com.shishuheng.framework.authentication.service;
 
-import com.shishuheng.framework.authentication.domain.status.Status;
-import com.shishuheng.framework.authentication.domain.status.StatusRepository;
-import com.shishuheng.framework.authentication.service.base.BaseService;
-import com.shishuheng.framework.authentication.domain.base.Result;
-import com.shishuheng.framework.authentication.domain.permission.Permission;
 import com.shishuheng.framework.authentication.domain.permission.PermissionRepository;
-import com.shishuheng.framework.authentication.domain.role.Role;
-import com.shishuheng.framework.authentication.domain.role.RoleDto;
 import com.shishuheng.framework.authentication.domain.role.RoleRepository;
-import com.shishuheng.framework.authentication.utils.CommonUtil;
+import com.shishuheng.framework.authentication.domain.status.StatusRepository;
+import com.shishuheng.framework.authentication.service.base.BaseAuthenticationService;
+import com.shishuheng.framework.common.module.domain.base.Result;
+import com.shishuheng.framework.common.module.domain.permission.Permission;
+import com.shishuheng.framework.common.module.domain.role.Role;
+import com.shishuheng.framework.common.module.domain.role.RoleDto;
+import com.shishuheng.framework.common.module.domain.status.Status;
+import com.shishuheng.framework.common.module.utils.CommonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ import java.util.*;
 @Slf4j
 @Service
 @DependsOn(value = "permissionService")
-public class RoleService extends BaseService<Role> {
+public class RoleService extends BaseAuthenticationService<Role> {
     @Autowired
     private RoleRepository repository;
 

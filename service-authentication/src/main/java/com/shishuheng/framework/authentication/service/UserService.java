@@ -1,17 +1,17 @@
 package com.shishuheng.framework.authentication.service;
 
-import com.shishuheng.framework.authentication.domain.status.Status;
-import com.shishuheng.framework.authentication.domain.status.StatusRepository;
-import com.shishuheng.framework.authentication.service.base.BaseService;
-import com.shishuheng.framework.authentication.domain.base.Result;
-import com.shishuheng.framework.authentication.domain.permission.Permission;
-import com.shishuheng.framework.authentication.domain.role.Role;
 import com.shishuheng.framework.authentication.domain.role.RoleRepository;
-import com.shishuheng.framework.authentication.domain.user.User;
-import com.shishuheng.framework.authentication.domain.user.UserDto;
+import com.shishuheng.framework.authentication.domain.status.StatusRepository;
 import com.shishuheng.framework.authentication.domain.user.UserRepository;
-import com.shishuheng.framework.authentication.utils.CommonUtil;
-import com.shishuheng.framework.authentication.utils.MD5Util;
+import com.shishuheng.framework.authentication.service.base.BaseAuthenticationService;
+import com.shishuheng.framework.common.module.domain.base.Result;
+import com.shishuheng.framework.common.module.domain.permission.Permission;
+import com.shishuheng.framework.common.module.domain.role.Role;
+import com.shishuheng.framework.common.module.domain.status.Status;
+import com.shishuheng.framework.common.module.domain.user.User;
+import com.shishuheng.framework.common.module.domain.user.UserDto;
+import com.shishuheng.framework.common.module.utils.CommonUtil;
+import com.shishuheng.framework.common.module.utils.MD5Util;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,10 +35,10 @@ import java.util.*;
 @Slf4j
 @Service
 @DependsOn(value = "roleService")
-public class UserService extends BaseService<User> implements UserDetailsService {
+public class UserService extends BaseAuthenticationService<User> implements UserDetailsService {
 
     @Autowired
-    private UserRepository repository;/**/
+    private UserRepository repository;
 
     @Autowired
     private RoleRepository roleRepository;

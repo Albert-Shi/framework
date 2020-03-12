@@ -1,17 +1,18 @@
 package com.shishuheng.framework.authentication.service;
 
-import com.shishuheng.framework.authentication.domain.base.Result;
-import com.shishuheng.framework.authentication.domain.permission.Permission;
-import com.shishuheng.framework.authentication.domain.permission.PermissionDto;
-import com.shishuheng.framework.authentication.domain.status.Status;
 import com.shishuheng.framework.authentication.domain.status.StatusRepository;
-import com.shishuheng.framework.authentication.service.base.BaseService;
-import com.shishuheng.framework.authentication.utils.CommonUtil;
+import com.shishuheng.framework.authentication.service.base.BaseAuthenticationService;
+import com.shishuheng.framework.common.module.domain.base.Result;
+import com.shishuheng.framework.common.module.domain.permission.Permission;
+import com.shishuheng.framework.common.module.domain.permission.PermissionDto;
+import com.shishuheng.framework.common.module.domain.status.Status;
+import com.shishuheng.framework.common.module.utils.CommonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -27,7 +28,7 @@ import java.util.Set;
  */
 @Slf4j
 @Service
-public class StatusService extends BaseService<Status> {
+public class StatusService extends BaseAuthenticationService<Status> {
     @Autowired
     private StatusRepository repository;
 
@@ -104,6 +105,38 @@ public class StatusService extends BaseService<Status> {
         CommonUtil.copyObject(dto, updateOne, false);
         repository.save(updateOne);
         return new Result();
+    }
+
+    /**
+     * 根据状态和实体类型查询
+     *
+     * @param code
+     * @param managedEntityId
+     * @return
+     */
+    public Status findStatusByCodeAndEffectEntityId(String code, Long managedEntityId) {
+        return repository.findStatusByCodeAndEffectEntityId(code, managedEntityId);
+    }
+
+    /**
+     * 根据类型实体id查询所有状态
+     *
+     * @param managedEntityId
+     * @return
+     */
+    public List<Status> findStatusesByEffectEntityId(@RequestParam(value = "managedEntityId") Long managedEntityId) {
+        return repository.findStatusesByEffectEntityId(managedEntityId);
+    }
+
+    /**
+     * 批量保存
+     *
+     * @param statuses
+     * @return
+     */
+    public Result<String> addAllStatus(List<Status> statuses) {
+        repository.saveAll(statuses);
+        return new Result<>();
     }
 
     @Override

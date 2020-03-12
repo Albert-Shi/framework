@@ -3,10 +3,10 @@ package com.shishuheng.framework.authentication.service;
 import com.alibaba.fastjson.JSON;
 import com.shishuheng.framework.authentication.domain.client.Client;
 import com.shishuheng.framework.authentication.domain.client.ClientRepository;
-import com.shishuheng.framework.authentication.domain.permission.Permission;
-import com.shishuheng.framework.authentication.domain.status.Status;
-import com.shishuheng.framework.authentication.service.base.BaseService;
-import com.shishuheng.framework.authentication.service.base.CommonException;
+import com.shishuheng.framework.authentication.service.base.BaseAuthenticationService;
+import com.shishuheng.framework.common.module.domain.permission.Permission;
+import com.shishuheng.framework.common.module.domain.status.Status;
+import com.shishuheng.framework.common.module.service.CommonException;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ import java.util.Set;
 @Data
 @Slf4j
 @Service
-public class ClientService extends BaseService<Client> implements ClientDetailsService {
+public class ClientService extends BaseAuthenticationService<Client> implements ClientDetailsService {
     @Autowired
     private ClientRepository repository;
 
