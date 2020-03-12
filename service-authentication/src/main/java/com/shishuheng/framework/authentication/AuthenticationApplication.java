@@ -12,9 +12,9 @@ import org.springframework.context.annotation.ComponentScans;
  * @author shishuheng
  */
 @EnableEurekaClient
-@EntityScan(basePackages = "com.shishuheng.framework")
+@EntityScan(basePackages = {"com.shishuheng.framework.authentication", "com.shishuheng.framework.common.module"})
 @EnableFeignClients(basePackages = {"com.shishuheng.framework"})
-@SpringBootApplication(scanBasePackages = {"com.shishuheng.framework"})
+@SpringBootApplication(scanBasePackages = {"com.shishuheng.framework.authentication", "com.shishuheng.framework.common.module"})
 public class AuthenticationApplication {
 
     public static void main(String[] args) {
