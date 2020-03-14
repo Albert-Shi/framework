@@ -32,9 +32,7 @@ public class MD5Util {
         return hexValue.toString();
     }
 
-//    public static void main(String[] args) {
-//        System.out.println(MD5Util.encode("123456"));
-//
-//
-//    }
+    public static void main(String[] args) {
+        System.out.println(MD5Util.encode("abcdef"));
+    }
 }

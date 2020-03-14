@@ -1,6 +1,7 @@
 package com.shishuheng.framework.music.domain.music;
 
 import com.shishuheng.framework.common.module.domain.base.BaseEntity;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -13,6 +14,7 @@ import javax.persistence.Entity;
  */
 @Data
 @Entity
+@ApiModel(value = "音乐")
 public class Music extends BaseEntity {
     @Column(name = "title")
     @ApiModelProperty(value = "标题")

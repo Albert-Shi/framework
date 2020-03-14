@@ -50,20 +50,35 @@ public class ClientService extends BaseAuthenticationService<Client> implements 
         if (repository.count() > 0) {
             return;
         }
-        Client test = new Client();
-        test.setClientId("test-client");
-        test.setClientSecret(passwordEncoder.encode("test-password"));
-        test.setAccessTokenExpire(500);
-        test.setRefreshTokenExpire(700);
         List<String> authorities = Arrays.asList("read", "update", "add", "delete");
-        test.setAuthoritiesJson(JSON.toJSONString(authorities));
         List<String> grantTypes = Arrays.asList("password", "client_credentials", "authorization_code", "refresh_token");
-        test.setGrantTypeJson(JSON.toJSONString(grantTypes));
-        test.setDescription("这是初始化用来测试的");
         Status enable = getStatus(getManagedEntity().getClassName() + "Enabled");
-        test.setStatus(enable);
-        test.setCreatedDate(new Date());
-        repository.save(test);
+
+
+        // 授权
+        Client authentication = new Client();
+        authentication.setClientId("client-authentication");
+        authentication.setClientSecret(passwordEncoder.encode("abcdef"));
+        authentication.setAccessTokenExpire(500);
+        authentication.setRefreshTokenExpire(700);
+        authentication.setAuthoritiesJson(JSON.toJSONString(authorities));
+        authentication.setGrantTypeJson(JSON.toJSONString(grantTypes));
+        authentication.setDescription("授权服务客户端");
+        authentication.setStatus(enable);
+        authentication.setCreatedDate(new Date());
+        repository.save(authentication);
+        // 音乐
+        Client music = new Client();
+        music.setClientId("client-music");
+        music.setClientSecret(passwordEncoder.encode("abcdef"));
+        music.setAccessTokenExpire(500);
+        music.setRefreshTokenExpire(700);
+        music.setAuthoritiesJson(JSON.toJSONString(authorities));
+        music.setGrantTypeJson(JSON.toJSONString(grantTypes));
+        music.setDescription("音乐服务客户端");
+        music.setStatus(enable);
+        music.setCreatedDate(new Date());
+        repository.save(music);
         log.info("证明 ClientService 执行过 initEntity");
     }
 

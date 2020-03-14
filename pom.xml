@@ -45,6 +45,12 @@
             <artifactId>spring-cloud-starter-security</artifactId>
         </dependency>
 
+        <!-- feign客户端配置 Netty4ClientHttpRequestFactory 见 common-module-->
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+        </dependency>
+
         <!-- mysql-connector-->
         <dependency>
             <groupId>mysql</groupId>

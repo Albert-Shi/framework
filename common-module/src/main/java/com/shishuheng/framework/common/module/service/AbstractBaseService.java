@@ -5,6 +5,7 @@ import com.shishuheng.framework.common.module.domain.base.BaseEntity;
 import com.shishuheng.framework.common.module.domain.managed.ManagedEntity;
 import com.shishuheng.framework.common.module.domain.permission.Permission;
 import com.shishuheng.framework.common.module.domain.status.Status;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.annotation.PostConstruct;
 import java.lang.reflect.*;
@@ -16,6 +17,8 @@ import java.util.Set;
  * @date 2020/2/28 11:57 上午
  */
 public abstract class AbstractBaseService<T extends BaseEntity> {
+    @Value("${security.oauth2.client.client-id}")
+    public String clientId;
 
     /**
      * 初始化此实体的权限

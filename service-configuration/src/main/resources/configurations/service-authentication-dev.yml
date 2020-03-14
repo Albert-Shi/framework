@@ -18,14 +18,29 @@ security:
   hostname: localhost:${server.port}
   oauth2:
     client:
-      client-id: first-client
-      client-secret: noonewilleverguess
-      access-token-uri: ${security.hostname}/oauth/token
-      user-authorization-uri: ${security.hostname}/oauth/authorize
+      id: ${security.oauth2.resource.id}
+      client-id: client-authentication
+      client-secret: abcdef
+      # 此处设置只是为了在获取token的时候不报错
+      scope: all
+      access-token-uri: http://${security.hostname}/oauth/token
+      user-authorization-uri: http://${security.hostname}/oauth/authorize
+      client-authentication-scheme: header
     resource:
+      id: ${spring.application.name}
       user-info: ${security.hostname}/user
       jwt:
         key-uri: ${security.hostname}/oauth/token_key
+
+ribbon:
+  readTimeout: 60000
+  connectTimeout: 60000
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 30000
+        readTimeout: 30000
 
 global:
   # 低内存模式

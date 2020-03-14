@@ -28,4 +28,8 @@ public class ManagedEntity extends BaseEntity {
     @Column(name = "className")
     @ApiModelProperty(value = "类名称")
     private String className;
+
+    @Column(name = "from_service")
+    @ApiModelProperty(value = "所属服务端")
+    private String fromServiceClient;
 }

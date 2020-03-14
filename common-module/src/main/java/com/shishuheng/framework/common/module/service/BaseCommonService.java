@@ -90,6 +90,7 @@ public abstract class BaseCommonService<T extends BaseEntity> extends AbstractBa
             managedEntity.setClassName(entity.getClass().getSimpleName());
             managedEntity.setLabel(entity.getClass().getAnnotation(ApiModel.class).value());
             managedEntity.setCreatedDate(new Date());
+            managedEntity.setFromServiceClient(clientId);
             Result<ManagedEntity> result = authenticationFeign.addManagedEntity(managedEntity);
             if (null == result || null == result.getData()) {
                 logger.error("实体: {} 加入管理失败", className);

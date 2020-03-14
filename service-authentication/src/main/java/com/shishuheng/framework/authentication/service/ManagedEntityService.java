@@ -27,7 +27,6 @@ import java.util.Set;
  */
 @Slf4j
 @Service
-//@DependsOn(value = "statusService")
 public class ManagedEntityService extends BaseAuthenticationService<ManagedEntity> {
     @Autowired
     private ManagedEntityRepository repository;

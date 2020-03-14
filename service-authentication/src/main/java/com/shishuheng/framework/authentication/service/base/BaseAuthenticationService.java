@@ -97,6 +97,7 @@ public abstract class BaseAuthenticationService<T extends BaseEntity> extends Ab
             ManagedEntity managedEntity = new ManagedEntity();
             managedEntity.setClassName(entity.getClass().getSimpleName());
             managedEntity.setLabel(entity.getClass().getAnnotation(ApiModel.class).value());
+            managedEntity.setFromServiceClient(clientId);
             managedEntity.setCreatedDate(new Date());
             managedEntityRepository.save(managedEntity);
             this.managedEntity = managedEntity;
