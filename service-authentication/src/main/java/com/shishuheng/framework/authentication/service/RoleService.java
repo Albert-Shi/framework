@@ -62,6 +62,7 @@ public class RoleService extends BaseAuthenticationService<Role> {
             Set<Permission> permissions = new HashSet<>(permissionList);
             Role role = new Role();
             role.setLabel("管理员");
+            role.setCode("ADMIN");
             role.setStatus(enabled);
             role.setPermissions(permissions);
             role.setCreatedDate(new Date());
@@ -77,7 +78,7 @@ public class RoleService extends BaseAuthenticationService<Role> {
      * @return
      */
     public Result<String> addRole(RoleDto dto) {
-        Role role = repository.findRoleByLabel(dto.getLabel());
+        Role role = repository.findRoleByCode(dto.getLabel());
         if (null != role) {
             return new Result<>("角色标签已存在");
         } else {

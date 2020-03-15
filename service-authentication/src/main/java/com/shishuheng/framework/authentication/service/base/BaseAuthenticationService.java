@@ -5,6 +5,7 @@ import com.shishuheng.framework.authentication.domain.entity.ManagedEntityReposi
 import com.shishuheng.framework.authentication.domain.status.StatusRepository;
 import com.shishuheng.framework.authentication.helper.common.GlobalProperties;
 import com.shishuheng.framework.common.module.domain.base.BaseEntity;
+import com.shishuheng.framework.common.module.domain.base.BaseStatusEntity;
 import com.shishuheng.framework.common.module.domain.managed.ManagedEntity;
 import com.shishuheng.framework.common.module.domain.permission.Permission;
 import com.shishuheng.framework.common.module.domain.status.Status;
@@ -22,6 +23,8 @@ import java.util.*;
  */
 public abstract class BaseAuthenticationService<T extends BaseEntity> extends AbstractBaseService<T> {
     private static final Logger logger = LoggerFactory.getLogger(BaseAuthenticationService.class);
+
+    private T entityInstance;
 
     @Autowired
     private ManagedEntityRepository managedEntityRepository;
@@ -86,17 +89,17 @@ public abstract class BaseAuthenticationService<T extends BaseEntity> extends Ab
 
     @Override
     public boolean addManage() {
-        T entity = createModel();
-        if (null == entity) {
+        entityInstance = createModel();
+        if (null == entityInstance) {
             logger.info("实例化对象失败");
             return false;
         }
-        String className = entity.getClass().getSimpleName();
+        String className = entityInstance.getClass().getSimpleName();
         ManagedEntity one = managedEntityRepository.findManagedEntityByClassName(className);
         if (null == one) {
             ManagedEntity managedEntity = new ManagedEntity();
-            managedEntity.setClassName(entity.getClass().getSimpleName());
-            managedEntity.setLabel(entity.getClass().getAnnotation(ApiModel.class).value());
+            managedEntity.setClassName(entityInstance.getClass().getSimpleName());
+            managedEntity.setLabel(entityInstance.getClass().getAnnotation(ApiModel.class).value());
             managedEntity.setFromServiceClient(clientId);
             managedEntity.setCreatedDate(new Date());
             managedEntityRepository.save(managedEntity);
@@ -111,6 +114,10 @@ public abstract class BaseAuthenticationService<T extends BaseEntity> extends Ab
 
     @Override
     public List<Status> initBaseStatus(String entityName, Set<Permission> permissions) {
+        if (!(entityInstance instanceof BaseStatusEntity)) {
+            logger.info(managedEntity.getLabel() + " 实体类型非 BaseStatusEntity , 跳过状态初始化");
+            return null;
+        }
         if (null != permissions && permissions.size() < 1) {
             permissions = null;
         }

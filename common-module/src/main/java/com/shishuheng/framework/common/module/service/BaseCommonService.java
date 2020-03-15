@@ -2,6 +2,7 @@ package com.shishuheng.framework.common.module.service;
 
 
 import com.shishuheng.framework.common.module.domain.base.BaseEntity;
+import com.shishuheng.framework.common.module.domain.base.BaseStatusEntity;
 import com.shishuheng.framework.common.module.domain.base.Result;
 import com.shishuheng.framework.common.module.domain.managed.ManagedEntity;
 import com.shishuheng.framework.common.module.domain.permission.Permission;
@@ -23,6 +24,8 @@ public abstract class BaseCommonService<T extends BaseEntity> extends AbstractBa
 
     @Resource
     private AuthenticationFeign authenticationFeign;
+
+    private T entityInstance;
 
     private ManagedEntity managedEntity;
 
@@ -78,17 +81,17 @@ public abstract class BaseCommonService<T extends BaseEntity> extends AbstractBa
 
     @Override
     public boolean addManage() {
-        T entity = createModel();
-        if (null == entity) {
+        entityInstance = createModel();
+        if (null == entityInstance) {
             logger.info("实例化对象失败");
             return false;
         }
-        String className = entity.getClass().getSimpleName();
+        String className = entityInstance.getClass().getSimpleName();
         ManagedEntity one = authenticationFeign.findManagedEntityByClassName(className);
         if (null == one) {
             ManagedEntity managedEntity = new ManagedEntity();
-            managedEntity.setClassName(entity.getClass().getSimpleName());
-            managedEntity.setLabel(entity.getClass().getAnnotation(ApiModel.class).value());
+            managedEntity.setClassName(entityInstance.getClass().getSimpleName());
+            managedEntity.setLabel(entityInstance.getClass().getAnnotation(ApiModel.class).value());
             managedEntity.setCreatedDate(new Date());
             managedEntity.setFromServiceClient(clientId);
             Result<ManagedEntity> result = authenticationFeign.addManagedEntity(managedEntity);
@@ -106,6 +109,10 @@ public abstract class BaseCommonService<T extends BaseEntity> extends AbstractBa
 
     @Override
     public List<Status> initBaseStatus(String entityName, Set<Permission> permissions) {
+        if (!(entityInstance instanceof BaseStatusEntity)) {
+            logger.info(entityName + " 实体类型非 BaseStatusEntity , 跳过状态初始化");
+            return null;
+        }
         if (null != permissions && permissions.size() < 1) {
             permissions = null;
         }

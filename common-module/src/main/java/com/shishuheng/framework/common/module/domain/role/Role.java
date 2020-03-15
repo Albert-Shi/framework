@@ -1,6 +1,7 @@
 package com.shishuheng.framework.common.module.domain.role;
 
 import com.shishuheng.framework.common.module.domain.base.BaseStatusEntity;
+import com.shishuheng.framework.common.module.domain.menu.Menu;
 import com.shishuheng.framework.common.module.domain.permission.Permission;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -20,13 +21,21 @@ import java.util.Set;
 @Entity
 @ApiModel(value = "角色")
 public class Role extends BaseStatusEntity {
-    @Column(name = "label", unique = true)
+    @Column(name = "label")
     @ApiModelProperty(value = "角色标签")
     private String label;
+
+    @Column(name = "code", unique = true)
+    @ApiModelProperty(value = "角色代码")
+    private String code;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @ApiModelProperty(value = "权限集合")
     private Set<Permission> permissions;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @ApiModelProperty(value = "菜单集合")
+    private Set<Menu> menus;
 
 //    @ManyToMany(fetch = FetchType.EAGER)
 //    private Set<User> users;
