@@ -11,6 +11,12 @@ import lombok.Data;
 @Data
 @ApiModel(value = "基础包含状态的Dto类")
 public class BaseStatusDto extends BaseDto {
-    @ApiModelProperty(value = "状态")
-    private Integer status;
+    @ApiModelProperty(value = "状态id")
+    private Long status;
+
+    @ApiModelProperty(value = "状态码")
+    private String statusCode;
+
+    @ApiModelProperty(value = "状态标签")
+    private String statusLabel;
 }

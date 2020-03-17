@@ -1,5 +1,6 @@
 package com.shishuheng.framework.common.module.domain.menu;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -10,7 +11,11 @@ import java.util.*;
  * @date 2020年 03月 15日 20:32:52
  */
 @Data
+@ApiModel(value = "简化菜单信息")
 public class SimpleMenuVo {
+    @ApiModelProperty(value = "id")
+    private Long id;
+
     @ApiModelProperty(value = "标签")
     private String label;
 
@@ -22,6 +27,7 @@ public class SimpleMenuVo {
 
     public static SimpleMenuVo trans(Menu menu) {
         SimpleMenuVo vo = new SimpleMenuVo();
+        vo.setId(menu.getId());
         vo.setLabel(menu.getLabel());
         vo.setPath(menu.getPath());
         vo.setSubMenu(new HashSet<>());

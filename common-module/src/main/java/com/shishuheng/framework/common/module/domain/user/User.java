@@ -27,6 +27,10 @@ public class User extends BaseStatusEntity implements UserDetails {
     @ApiModelProperty(value = "用户名")
     private String username;
 
+    @Column(name = "label")
+    @ApiModelProperty(value = "用户标签")
+    private String label;
+
     @Column(name = "password", nullable = false)
     @ApiModelProperty(value = "密码")
     private String password;

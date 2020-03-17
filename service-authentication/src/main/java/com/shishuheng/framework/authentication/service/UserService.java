@@ -78,12 +78,35 @@ public class UserService extends BaseAuthenticationService<User> implements User
      * @param dto
      * @return
      */
-    public Result<List<User>> findUserList(UserDto dto) {
+    public Result<List<UserDto>> findUserList(UserDto dto) {
         if (null == dto) {
             dto = new UserDto();
         }
         List<User> list = repository.findAll(buildSpecification(dto));
-        return new Result<>(list);
+        List<UserDto> dtos = trans(list);
+        return new Result<>(dtos);
+    }
+
+    /**
+     * 数据转换
+     *
+     * @param users
+     * @return
+     */
+    private List<UserDto> trans(List<User> users) {
+        List<UserDto> userDtos = new ArrayList<>();
+        if (null == users || users.size() < 1) {
+            return userDtos;
+        }
+        for (User u : users) {
+            UserDto dto = new UserDto();
+            CommonUtil.copyObject(u, dto, true, "status", "password");
+            dto.setStatus(u.getStatus().getId());
+            dto.setStatusCode(u.getStatus().getCode());
+            dto.setStatusLabel(u.getStatus().getLabel());
+            userDtos.add(dto);
+        }
+        return userDtos;
     }
 
     /**
@@ -147,6 +170,7 @@ public class UserService extends BaseAuthenticationService<User> implements User
             }
             Set<Role> roles = new HashSet<>(roleRepository.findAll());
             User user = new User();
+            user.setLabel("管理员");
             user.setUsername("admin");
             user.setPassword(MD5Util.encode("123456"));
             user.setStatus(enabled);

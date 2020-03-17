@@ -16,6 +16,7 @@ import java.util.Set;
 @Data
 public class LoginUserInfo {
     private String username;
+    private String label;
     private Set<String> permissions;
     private Set<String> roles;
     private Set<SimpleMenuVo> menus;
@@ -35,6 +36,7 @@ public class LoginUserInfo {
 
         LoginUserInfo info = new LoginUserInfo();
         info.setUsername(user.getUsername());
+        info.setLabel(user.getLabel());
         info.setRoles(roles);
         info.setPermissions(permissions);
         info.setMenus(SimpleMenuVo.createMenuTree(menus));

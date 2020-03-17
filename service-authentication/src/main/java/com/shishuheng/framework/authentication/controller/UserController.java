@@ -1,8 +1,7 @@
 package com.shishuheng.framework.authentication.controller;
 
-import com.shishuheng.framework.common.module.domain.base.Result;
 import com.shishuheng.framework.authentication.service.UserService;
-import com.shishuheng.framework.common.module.domain.user.User;
+import com.shishuheng.framework.common.module.domain.base.Result;
 import com.shishuheng.framework.common.module.domain.user.UserDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -40,8 +39,8 @@ public class UserController {
 
     @PostMapping("/list")
     @ApiOperation(value = "查询用户列表", httpMethod = "POST")
-    @PreAuthorize(value = "hasPermission(null, '/user/find')")
-    public Result<List<User>> findList(@RequestBody(required = false) UserDto dto) {
+    @PreAuthorize(value = "hasPermission(null, '/user/list')")
+    public Result<List<UserDto>> findList(@RequestBody(required = false) UserDto dto) {
         return service.findUserList(dto);
     }
 
