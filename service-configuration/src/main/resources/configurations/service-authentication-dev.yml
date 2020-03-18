@@ -42,6 +42,16 @@ feign:
         connectTimeout: 30000
         readTimeout: 30000
 
+swagger:
+  basePackage: com.shishuheng.framework.authentication.controller
+  title: 系统模块
+  description: 系统核心部分的管理
+  version: 1.0
+  contact:
+    name: shishuheng
+    email: 1136313573@qq.com
+    url:
+
 global:
   # 低内存模式
   lowMemoryMode: false

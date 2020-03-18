@@ -1,9 +1,12 @@
-package com.shishuheng.framework.common.module.utils;
+package com.siwei.frame.car.order.util;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.validation.groups.Default;
 import java.lang.reflect.Field;
 import java.util.*;
 
@@ -24,6 +27,40 @@ public class ValidateUtil {
     }
 
     private ValidateUtil() {
+    }
+
+    /**
+     * 使用默认校验组校验传入的实体类
+     *
+     * @param entity
+     * @return
+     */
+    public static <T> String defaultValid(T entity) {
+        javax.validation.Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+        Set<ConstraintViolation<T>> validate = validator.validate(entity, Default.class);
+        if (!validate.isEmpty()) {
+            StringBuffer buffer = new StringBuffer();
+            validate.forEach(e -> buffer.append(e.getMessage()).append(";"));
+            return buffer.toString();
+        }
+        return null;
+    }
+
+    /**
+     * 使用传入校验组(可以多个)校验传入的实体类
+     *
+     * @param entity
+     * @return
+     */
+    public static <T> String validByGroups(T entity, Class<?>... groupsClass) {
+        javax.validation.Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+        Set<ConstraintViolation<T>> validate = validator.validate(entity, groupsClass);
+        if (!validate.isEmpty()) {
+            StringBuffer buffer = new StringBuffer();
+            validate.forEach(e -> buffer.append(e.getMessage()).append(";"));
+            return buffer.toString();
+        }
+        return null;
     }
 
     /**
@@ -141,7 +178,7 @@ public class ValidateUtil {
          * @param field  校验字段
          * @param target 校验目标
          * @param groups 校验组
-         * @return
+         * @return 返回是否校验通过 (只有真正校验通过了才返回true，不需要校验、校验失败等都返回false)
          */
         public abstract boolean validateMethod(String parentFiledName, Map<String, String> message, Field field, Object target, Class... groups) throws Exception;
 
@@ -319,6 +356,12 @@ public class ValidateUtil {
             } else if (value instanceof Map) {
                 Map map = (Map) value;
                 if (map.size() >= min && map.size() <= max) {
+                    return true;
+                }
+                failure = true;
+            } else if (value.getClass().isArray()) {
+                Object[] array = (Object[]) value;
+                if (array.length >= min && array.length <= max) {
                     return true;
                 }
                 failure = true;
