@@ -25,29 +25,22 @@ public class SimpleMenuVo {
     @ApiModelProperty(value = "子菜单")
     private Set<SimpleMenuVo> subMenu;
 
+    @ApiModelProperty(value = "排序")
+    private Integer sort;
+
     public static SimpleMenuVo trans(Menu menu) {
         SimpleMenuVo vo = new SimpleMenuVo();
         vo.setId(menu.getId());
         vo.setLabel(menu.getLabel());
         vo.setPath(menu.getPath());
-        vo.setSubMenu(new HashSet<>());
+        vo.setSort(menu.getSort());
+        vo.setSubMenu(new LinkedHashSet<>());
         return vo;
     }
 
     public static Set<SimpleMenuVo> createMenuTree(Collection<Menu> menus) {
         ArrayList<Menu> items = new ArrayList<>(menus);
-        items.sort(new Comparator<Menu>() {
-            @Override
-            public int compare(Menu o1, Menu o2) {
-                if (o1.getId() > o2.getId()) {
-                    return 1;
-                } else if (o1.getId() < o2.getId()) {
-                    return -1;
-                } else {
-                    return 0;
-                }
-            }
-        });
+        items.sort(menuSortById());
         Set<SimpleMenuVo> tree = new LinkedHashSet<>();
         Map<Long, SimpleMenuVo> menuMap = new HashMap<>();
         for (Menu m : items) {
@@ -63,5 +56,20 @@ public class SimpleMenuVo {
             }
         }
         return tree;
+    }
+
+    private static Comparator<Menu> menuSortById() {
+        return new Comparator<Menu>() {
+            @Override
+            public int compare(Menu o1, Menu o2) {
+                if (o1.getId() > o2.getId()) {
+                    return 1;
+                } else if (o1.getId() < o2.getId()) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            }
+        };
     }
 }

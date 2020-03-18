@@ -2,12 +2,10 @@ package com.shishuheng.framework.common.module.domain.user;
 
 import com.shishuheng.framework.common.module.domain.menu.Menu;
 import com.shishuheng.framework.common.module.domain.menu.SimpleMenuVo;
-import com.shishuheng.framework.common.module.domain.permission.Permission;
 import com.shishuheng.framework.common.module.domain.role.Role;
 import lombok.Data;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author shishuheng
@@ -39,7 +37,35 @@ public class LoginUserInfo {
         info.setLabel(user.getLabel());
         info.setRoles(roles);
         info.setPermissions(permissions);
-        info.setMenus(SimpleMenuVo.createMenuTree(menus));
+        info.setMenus(sortMenu(SimpleMenuVo.createMenuTree(menus)));
         return info;
+    }
+
+    private static Set<SimpleMenuVo> sortMenu(Set<SimpleMenuVo> menus) {
+        if (null == menus || menus.size() < 1) {
+            return menus;
+        }
+        List<SimpleMenuVo> list = new ArrayList<>(menus);
+        list.sort(simpleMenuSortBySort());
+        LinkedHashSet<SimpleMenuVo> sorted = new LinkedHashSet<>(list);
+        for (SimpleMenuVo vo : sorted) {
+            vo.setSubMenu(sortMenu(vo.getSubMenu()));
+        }
+        return sorted;
+    }
+
+    private static Comparator<SimpleMenuVo> simpleMenuSortBySort() {
+        return new Comparator<SimpleMenuVo>() {
+            @Override
+            public int compare(SimpleMenuVo o1, SimpleMenuVo o2) {
+                if (o1.getSort() > o2.getSort()) {
+                    return 1;
+                } else if (o1.getSort() < o2.getSort()) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            }
+        };
     }
 }
