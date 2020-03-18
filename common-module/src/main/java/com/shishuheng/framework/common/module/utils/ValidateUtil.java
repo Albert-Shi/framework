@@ -1,4 +1,4 @@
-package com.siwei.frame.car.order.util;
+package com.shishuheng.framework.common.module.utils;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
