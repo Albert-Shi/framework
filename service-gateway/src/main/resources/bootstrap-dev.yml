@@ -12,10 +12,27 @@ spring:
   cloud:
     gateway:
       routes:
-        # 授权中心
+        # 授权中心 需要在此配置文件处配置路由转发 否则swagger-ui聚合会不行
         - id: authentication
-          uri: http://localhost:9020
+          uri: lb://service-authentication
           predicates:
             - Path=/authen/**
           filters:
             - StripPrefix=1
+        - id: music
+          uri: lb://service-music
+          predicates:
+            - Path=/music/**
+          filters:
+            - StripPrefix=1
+
+swagger:
+  title: swagger文档
+  description: 文档整合
+  version: 1.0
+  basePackage:
+  termsOfServiceUrl:
+  contact:
+    name: shishuheng
+    email: 1136313573@qq.com
+    url:

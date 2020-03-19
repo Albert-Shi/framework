@@ -1,4 +1,4 @@
-package com.shishuheng.framework.servicegateway.config;
+package com.shishuheng.framework.gateway.config;
 
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
@@ -15,20 +15,24 @@ import reactor.core.publisher.Mono;
 @Configuration
 @RestController
 public class WebRouterConfig {
-    private static final String AUTHENTICATION_URL = "http://localhost:9020";
-    private static final String MUSIC_URL = "http://localhost:9100";
     @Bean
     public RouteLocator routeLocator(RouteLocatorBuilder builder) {
         return builder
                 .routes()
-//                .route(p ->
-//                        p.path("/get").filters(f -> f.addRequestHeader("Hello", "World")).uri("http://httpbin.org"))
+//                .route(p -> p.path("/get").filters(f -> f.addRequestHeader("Hello", "World")).uri("http://www.baidu.com"))
 //                .route(p ->
 //                        p.host("*.hystrix.com").filters(f -> f.hystrix(config -> config.setName("mycmd").setFallbackUri("forward:/fallback"))).uri("http://httpbin.org"))
-                .route(p -> p.path("/authentication")
-                        .filters(f -> f.hystrix(config -> {config.setName("authen").setFallbackUri("forward:/fallback");})).uri(AUTHENTICATION_URL))
-                .route(p -> p.path("/music")
-                        .filters(f -> f.hystrix(config -> {config.setName("music").setFallbackUri("forward:/fallback");})).uri(MUSIC_URL))
+                // 此处为示例用代码配置 主要配置还是使用配置文件
+                .route(p -> p
+                        .path("/authentication/**")
+                        .filters(f -> f
+                                .hystrix(config -> config
+                                        .setName("authen")
+                                        .setFallbackUri("forward:/fallback"))
+                                .stripPrefix(1))
+                        /* 以下的两种配置方式都是支持的 */
+                        .uri("lb://service-authentication")
+                        .uri("http://localhost:9020"))
                 .build();
     }
 

@@ -47,6 +47,7 @@ swagger:
   title: 音乐模块
   description: 音乐模块相关的管理
   version: 1.0
+  termsOfServiceUrl:
   contact:
     name: shishuheng
     email: 1136313573@qq.com

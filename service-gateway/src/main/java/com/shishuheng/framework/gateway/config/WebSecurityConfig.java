@@ -1,4 +1,4 @@
-package com.shishuheng.framework.servicegateway.config;
+package com.shishuheng.framework.gateway.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,6 +16,7 @@ public class WebSecurityConfig {
     @Bean
     public SecurityWebFilterChain webFluxSecurityFilterChain(ServerHttpSecurity http) {
         http.csrf().disable();
+        http.authorizeExchange().anyExchange().permitAll();
         return http.build();
     }
 }

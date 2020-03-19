@@ -20,10 +20,9 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        List<String> all = Arrays.asList("/**");
         List<String> swagger = Arrays.asList("/swagger-ui.html", "/webjars/springfox-swagger-ui/**",
                 "/swagger-resources/**", "/v2/api-docs/**");
-        String[] paths = combine(all, swagger);
+        String[] paths = combine(swagger);
         http.csrf().disable();
         http.authorizeRequests().antMatchers(paths).permitAll();
         http.authorizeRequests().anyRequest().authenticated();

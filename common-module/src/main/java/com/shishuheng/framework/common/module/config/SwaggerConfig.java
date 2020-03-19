@@ -40,6 +40,9 @@ public class SwaggerConfig {
     @Value(value = "${swagger.contact.email}")
     private String contactEmail;
 
+    @Value(value = "${swagger.termsOfServiceUrl}")
+    private String termsOfServiceUrl;
+
     @Bean
     public Docket createRestApi() {
         return new Docket(DocumentationType.SWAGGER_2)
@@ -56,6 +59,7 @@ public class SwaggerConfig {
         builder.title(title)
                 .contact(contact)
                 .description(description)
+                .termsOfServiceUrl(termsOfServiceUrl)
                 .version(version);
         return builder.build();
     }

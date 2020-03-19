@@ -1,4 +1,4 @@
-package com.shishuheng.framework.servicegateway;
+package com.shishuheng.framework.gateway;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

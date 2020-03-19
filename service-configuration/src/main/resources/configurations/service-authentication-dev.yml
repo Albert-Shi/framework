@@ -47,6 +47,7 @@ swagger:
   title: 系统模块
   description: 系统核心部分的管理
   version: 1.0
+  termsOfServiceUrl:
   contact:
     name: shishuheng
     email: 1136313573@qq.com
