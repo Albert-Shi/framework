@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: @pom.artifactId@
+  cloud:
+    consul:
+      host: localhost
+      discovery:
+        serviceName: Test_Consul
+
+logback:
+  file: log
+
+server:
+  port: 9050

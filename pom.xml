@@ -24,6 +24,7 @@
         <module>common-module</module>
         <!-- 业务模块-->
         <module>service-music</module>
+        <module>consul</module>
     </modules>
 
     <properties>
