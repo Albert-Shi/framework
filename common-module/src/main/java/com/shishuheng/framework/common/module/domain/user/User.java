@@ -1,6 +1,7 @@
 package com.shishuheng.framework.common.module.domain.user;
 
 import com.shishuheng.framework.common.module.domain.base.BaseStatusEntity;
+import com.shishuheng.framework.common.module.domain.department.Department;
 import com.shishuheng.framework.common.module.domain.permission.Permission;
 import com.shishuheng.framework.common.module.domain.role.Role;
 import io.swagger.annotations.ApiModelProperty;
@@ -39,13 +40,26 @@ public class User extends BaseStatusEntity implements UserDetails {
     @ApiModelProperty(value = "角色列表")
     private Set<Role> roles;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @ApiModelProperty(value = "部门列表")
+    private Set<Department> departments;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Set<Permission> permissions = new HashSet<>();
+        // 用户所属角色包含的权限
+        Set<Permission> rolePermissions = new HashSet<>();
         for (Role role : roles) {
-            permissions.addAll(role.getPermissions());
+            rolePermissions.addAll(role.getPermissions());
         }
-        return permissions;
+        // 用户所属部门包含的权限
+        Set<Permission> departmentPermissions = new HashSet<>();
+        for (Department department : departments) {
+            departmentPermissions.addAll(department.getPermissions());
+        }
+        // 二者取交集
+        Set<Permission> result = new HashSet<>(rolePermissions);
+        result.retainAll(departmentPermissions);
+        return result;
     }
 
     @Override

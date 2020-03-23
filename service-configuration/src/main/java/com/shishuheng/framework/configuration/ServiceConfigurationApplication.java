@@ -1,4 +1,4 @@
-package com.shishuheng.framework.music.service.configuration;
+package com.shishuheng.framework.configuration;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

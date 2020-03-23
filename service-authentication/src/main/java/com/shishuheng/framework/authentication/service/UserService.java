@@ -1,10 +1,12 @@
 package com.shishuheng.framework.authentication.service;
 
+import com.shishuheng.framework.authentication.domain.department.DepartmentRepository;
 import com.shishuheng.framework.authentication.domain.role.RoleRepository;
 import com.shishuheng.framework.authentication.domain.status.StatusRepository;
 import com.shishuheng.framework.authentication.domain.user.UserRepository;
 import com.shishuheng.framework.authentication.service.base.BaseAuthenticationService;
 import com.shishuheng.framework.common.module.domain.base.Result;
+import com.shishuheng.framework.common.module.domain.department.Department;
 import com.shishuheng.framework.common.module.domain.permission.Permission;
 import com.shishuheng.framework.common.module.domain.role.Role;
 import com.shishuheng.framework.common.module.domain.status.Status;
@@ -34,7 +36,7 @@ import java.util.*;
  */
 @Slf4j
 @Service
-@DependsOn(value = "roleService")
+@DependsOn(value = {"roleService", "departmentService"})
 public class UserService extends BaseAuthenticationService<User> implements UserDetailsService {
 
     @Autowired
@@ -42,6 +44,9 @@ public class UserService extends BaseAuthenticationService<User> implements User
 
     @Autowired
     private RoleRepository roleRepository;
+
+    @Autowired
+    private DepartmentRepository departmentRepository;
 
     @Autowired
     private StatusRepository statusRepository;
@@ -169,6 +174,9 @@ public class UserService extends BaseAuthenticationService<User> implements User
                 return;
             }
             Set<Role> roles = new HashSet<>(roleRepository.findAll());
+            Set<Department> departments = new HashSet<>();
+            departments.add(departmentRepository.findDepartmentByCode("ROOT_DEPART"));
+
             User user = new User();
             user.setLabel("管理员");
             user.setUsername("admin");
@@ -176,6 +184,7 @@ public class UserService extends BaseAuthenticationService<User> implements User
             user.setStatus(enabled);
             user.setCreatedDate(new Date());
             user.setRoles(roles);
+            user.setDepartments(departments);
             repository.save(user);
             log.info("***** 初始化管理员 admin *****");
         }
