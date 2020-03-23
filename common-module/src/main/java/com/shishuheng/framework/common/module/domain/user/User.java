@@ -4,6 +4,7 @@ import com.shishuheng.framework.common.module.domain.base.BaseStatusEntity;
 import com.shishuheng.framework.common.module.domain.department.Department;
 import com.shishuheng.framework.common.module.domain.permission.Permission;
 import com.shishuheng.framework.common.module.domain.role.Role;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
@@ -23,6 +24,7 @@ import java.util.Set;
  */
 @Data
 @Entity
+@ApiModel(value = "用户")
 public class User extends BaseStatusEntity implements UserDetails {
     @Column(name = "username", unique = true, nullable = false)
     @ApiModelProperty(value = "用户名")

@@ -2,7 +2,7 @@ package com.shishuheng.framework.common.module.domain.menu;
 
 import com.shishuheng.framework.common.module.domain.base.BaseStatusEntity;
 import com.shishuheng.framework.common.module.domain.status.Status;
-import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -15,7 +15,7 @@ import javax.persistence.Entity;
  */
 @Data
 @Entity
-@Api(tags = "菜单")
+@ApiModel(value = "菜单")
 public class Menu extends BaseStatusEntity {
     @Column(name = "label", nullable = false)
     @ApiModelProperty(value = "标签")

@@ -2,7 +2,7 @@ package com.shishuheng.framework.common.module.domain.department;
 
 import com.shishuheng.framework.common.module.domain.base.BaseStatusEntity;
 import com.shishuheng.framework.common.module.domain.permission.Permission;
-import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -18,7 +18,7 @@ import java.util.Set;
  */
 @Data
 @Entity
-@Api(tags = "部门")
+@ApiModel(value = "部门")
 public class Department extends BaseStatusEntity {
     @Column(name = "label", nullable = false)
     @ApiModelProperty(value = "标签")
