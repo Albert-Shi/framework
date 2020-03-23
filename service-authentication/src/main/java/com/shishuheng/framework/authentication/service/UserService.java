@@ -12,6 +12,7 @@ import com.shishuheng.framework.common.module.domain.role.Role;
 import com.shishuheng.framework.common.module.domain.status.Status;
 import com.shishuheng.framework.common.module.domain.user.User;
 import com.shishuheng.framework.common.module.domain.user.UserDto;
+import com.shishuheng.framework.common.module.domain.user.UserVO;
 import com.shishuheng.framework.common.module.utils.CommonUtil;
 import com.shishuheng.framework.common.module.utils.MD5Util;
 import lombok.extern.slf4j.Slf4j;
@@ -54,6 +55,19 @@ public class UserService extends BaseAuthenticationService<User> implements User
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return repository.findUserByUsername(username);
+    }
+
+    /**
+     * 根据id查询用户信息
+     *
+     * @param id
+     * @return
+     */
+    public Result<UserVO> findById(Long id) {
+        User user = repository.selectById(id);
+        UserVO vo = new UserVO();
+        CommonUtil.copyObject(user, vo, true, "password");
+        return new Result<>(vo);
     }
 
     /**

@@ -3,16 +3,14 @@ package com.shishuheng.framework.authentication.controller;
 import com.shishuheng.framework.authentication.service.UserService;
 import com.shishuheng.framework.common.module.domain.base.Result;
 import com.shishuheng.framework.common.module.domain.user.UserDto;
+import com.shishuheng.framework.common.module.domain.user.UserVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,6 +24,13 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserService service;
+
+    @PostMapping(value = "/find/{id}")
+    @ApiOperation(value = "根据id查询", httpMethod = "POST")
+    @PreAuthorize(value = "hasPermission(null, '/user/find')")
+    public Result<UserVO> findUserById(@PathVariable(name = "id") Long id) {
+        return service.findById(id);
+    }
 
     @PostMapping("/add")
     @ApiOperation(value = "新增用户", httpMethod = "POST")
