@@ -1,0 +1,30 @@
+version: '3.7'
+
+services:
+  eureka-app:
+    image: eureka:1.0
+    ports:
+      - "9010:9010"
+    networks:
+      - app-overlay
+
+  configuration-app:
+    image: configuration:1.0
+    depends_on:
+      - eureka-app
+    ports:
+      - "9030:9030"
+    networks:
+      - app-overlay
+
+  gateway-app:
+    image: gateway:1.0
+    depends_on:
+      - eureka-app
+    ports:
+      - "9000:9000"
+    networks:
+      - app-overlay
+
+networks:
+  app-overlay:
