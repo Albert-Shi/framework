@@ -5,6 +5,11 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://eureka-app:9010/eureka
+  instance:
+    # 使用ip
+    prefer-ip-address: true
+    # 在eureka上注册的ip地址 由于在docker compose配置文件中配置了此服务的名称是 configuration-app 故docker的网络环境中可以直接访问configuration-app
+    ip-address: configuration-app
 # 此处是设置暴露/actuator/bus-refresh等方法的 配置中心的服务端和客户端都需要进行以下配置
 management:
   endpoints:

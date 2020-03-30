@@ -133,11 +133,4 @@ public class SecurityUtil {
         }
         return step;
     }
-
-    public static void main(String[] args) {
-        String a = "/**/*/456/*/789";
-        String b = "/123/bcd/456/abc/789";
-        boolean pass = authenticationJudge(a, b);
-        System.out.println(pass);
-    }
 }

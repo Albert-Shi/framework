@@ -3,12 +3,12 @@ spring:
     stream:
       kafka:
         binder:
-          zk-nodes: localhost:2181
-          brokers: localhost:9092
+          zk-nodes: zookeeper-app:2181
+          brokers: kafka-app:9092
       bus:
         enabled: true
     config:
-      profile: dev
+      profile: docker
       label: master
       discovery:
         enabled: true
@@ -17,4 +17,9 @@ spring:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:9010/eureka
+      defaultZone: http://eureka-app:9010/eureka
+  instance:
+    # 使用ip
+    prefer-ip-address: true
+    # 在eureka上注册的ip地址 由于在docker compose配置文件中配置了此服务的名称是 music-app 故docker的网络环境中可以直接访问music-app
+    ip-address: music-app
