@@ -3,6 +3,8 @@ version: '3.7'
 services:
   eureka-app:
     image: eureka:1.0
+    deploy:
+      replicas: 1
     ports:
       - "9010:9010"
     networks:
@@ -12,6 +14,8 @@ services:
     image: configuration:1.0
     depends_on:
       - eureka-app
+    deploy:
+      replicas: 1
     ports:
       - "9030:9030"
     networks:
@@ -21,8 +25,46 @@ services:
     image: gateway:1.0
     depends_on:
       - eureka-app
+    deploy:
+      replicas: 1
     ports:
       - "9000:9000"
+    networks:
+      - app-overlay
+
+  mysql-app:
+    image: mysql
+    deploy:
+      replicas: 1
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    networks:
+      - app-overlay
+
+  redis-app:
+    image: redis
+    deploy:
+      replicas: 1
+    ports:
+      - "6379:6379"
+    networks:
+      - app-overlay
+
+  authentication-app:
+    image: authentication:1.0
+    depends_on:
+      - eureka-app
+      - configuration-app
+      - mysql-app
+      - redis-app
+    deploy:
+      replicas: 1
+    ports:
+      - "9020:9020"
     networks:
       - app-overlay
 
