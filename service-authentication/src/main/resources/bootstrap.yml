@@ -2,7 +2,7 @@ spring:
   application:
     name: @pom.artifactId@
   profiles:
-    active: docker
+    active: dev
 
 management:
   endpoints:

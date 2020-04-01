@@ -5,10 +5,15 @@ services:
     image: eureka:1.0
     deploy:
       replicas: 1
+      resources:
+        limits:
+          memory: 100M
     ports:
       - "9010:9010"
     networks:
       - app-overlay
+    volumes:
+      - "/root/docker/app/logs:/usr/src/app/logs"
 
   configuration-app:
     image: configuration:1.0
@@ -16,10 +21,15 @@ services:
       - eureka-app
     deploy:
       replicas: 1
+      resources:
+        limits:
+          memory: 100M
     ports:
       - "9030:9030"
     networks:
       - app-overlay
+    volumes:
+      - "/root/docker/app/logs:/usr/src/app/logs"
 
   gateway-app:
     image: gateway:1.0
@@ -27,15 +37,23 @@ services:
       - eureka-app
     deploy:
       replicas: 1
+      resources:
+        limits:
+          memory: 150M
     ports:
       - "9000:9000"
     networks:
       - app-overlay
+    volumes:
+      - "/root/docker/app/logs:/usr/src/app/logs"
 
   mysql-app:
     image: mysql
     deploy:
       replicas: 1
+      resources:
+        limits:
+          memory: 200M
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
@@ -49,6 +67,9 @@ services:
     image: redis
     deploy:
       replicas: 1
+      resources:
+        limits:
+          memory: 100M
     ports:
       - "6379:6379"
     networks:
@@ -63,10 +84,15 @@ services:
       - redis-app
     deploy:
       replicas: 1
+      resources:
+        limits:
+          memory: 256M
     ports:
       - "9020:9020"
     networks:
       - app-overlay
+    volumes:
+      - "/root/docker/app/logs:/usr/src/app/logs"
 
 networks:
   app-overlay:
